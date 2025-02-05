@@ -1,0 +1,61 @@
+/* SearchSort.css */
+.search-sort-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .search-wrapper {
+    flex-grow: 1;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    color: #666;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  
+  .sort-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .filter-icon {
+    margin-right: 8px;
+    color: #666;
+  }
+  
+  .sort-select {
+    padding: 10px 30px 10px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    appearance: none;
+    background-color: white;
+    cursor: pointer;
+  }
+  
+  .chevron-icon {
+    position: absolute;
+    right: 10px;
+    color: #666;
+    pointer-events: none;
+  }

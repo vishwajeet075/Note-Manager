@@ -1,0 +1,101 @@
+.note-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  
+  .note-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .note-card-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .note-type-icon {
+    margin-right: 12px;
+    color: #6a11cb;
+  }
+  
+  .note-details {
+    flex-grow: 1;
+  }
+  
+  .note-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .note-meta {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  .note-tag {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  
+  .note-tag.recent {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .note-tag.old {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  .note-date, .note-audio-length {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+  }
+  
+  .note-date svg, .note-audio-length svg {
+    margin-right: 4px;
+  }
+  
+  .note-card-body {
+    padding: 16px;
+  }
+  
+  .note-content {
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+  }
+  
+  .note-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+  
+  .btn-action {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 8px;
+  }
+  
+  .btn-action:hover {
+    color: #333;
+  }
