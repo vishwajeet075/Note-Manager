@@ -7,6 +7,7 @@ const NoteModal = ({ note, onClose, onFavorite, onEdit, onImageUpload }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [editedContent, setEditedContent] = useState(note.content);
   const [isEditing, setIsEditing] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(note.isFavorite); // Added local state
 
   const handleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -22,6 +23,11 @@ const NoteModal = ({ note, onClose, onFavorite, onEdit, onImageUpload }) => {
     if (file) {
       onImageUpload(file);
     }
+  };
+
+  const handleFavorite = () => {
+    setIsFavorite((prev) => !prev); // Toggle state
+    onFavorite(); // Call parent function
   };
 
   const renderContent = () => {
@@ -57,8 +63,8 @@ const NoteModal = ({ note, onClose, onFavorite, onEdit, onImageUpload }) => {
       <div className="modal-header">
         <h2>{note.title}</h2>
         <div className="modal-actions">
-          <button onClick={() => onFavorite(note.id)}>
-            <Star fill={note.isFavorite ? 'gold' : 'none'} />
+          <button onClick={handleFavorite}>
+            <Star fill={isFavorite ? 'gold' : 'none'} stroke="black" />
           </button>
           <button onClick={handleFullscreen}>
             {isFullscreen ? <Minimize2 /> : <Fullscreen />}

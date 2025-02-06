@@ -10,7 +10,8 @@ import Signup from './components/Signup';
 import './App.css';
 
 // Main Dashboard Component
-function Dashboard() {
+// Main Dashboard Component
+function Dashboard({ isFavouritesRoute = false }) {
   const [notes, setNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortMethod, setSortMethod] = useState('newest');
@@ -23,6 +24,10 @@ function Dashboard() {
         note.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    if (isFavouritesRoute) {
+      result = result.filter((note) => note.isFavorite);
+    }
+
     switch (sortMethod) {
       case 'oldest':
         return result.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -31,7 +36,7 @@ function Dashboard() {
       default:
         return result.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
-  }, [notes, searchTerm, sortMethod]);
+  }, [notes, searchTerm, sortMethod, isFavouritesRoute]);
 
   const addNote = useCallback((newNote) => {
     const noteToAdd = {
@@ -39,6 +44,7 @@ function Dashboard() {
       id: notes.length + 1,
       date: new Date().toISOString().split('T')[0],
       audioLength: newNote.type === 'audio' ? '00:09' : null,
+      isFavorite: false, // Default to false
     };
     setNotes((prevNotes) => [...prevNotes, noteToAdd]);
   }, [notes]);
@@ -63,6 +69,14 @@ function Dashboard() {
     }
   };
 
+  const handleFavorite = (id) => {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === id ? { ...note, isFavorite: !note.isFavorite } : note
+      )
+    );
+  };
+
   return (
     <div className="app-container">
       <Sidebar />
@@ -80,12 +94,13 @@ function Dashboard() {
             />
           ))}
         </div>
-        <InputBar onAddNote={addNote} />
+        {!isFavouritesRoute && <InputBar onAddNote={addNote} />}
       </div>
       {selectedNote && (
         <NoteModal
           note={selectedNote}
           onClose={() => setSelectedNote(null)}
+          onFavorite={() => handleFavorite(selectedNote.id)}
         />
       )}
     </div>
@@ -98,6 +113,7 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
+// Main App Component with Routing
 // Main App Component with Routing
 function App() {
   return (
@@ -122,6 +138,16 @@ function App() {
           }
         />
 
+        {/* Favourites Route (Protected) */}
+        <Route
+          path="/favourites"
+          element={
+            <ProtectedRoute>
+              <Dashboard isFavouritesRoute={true} />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Questions Route (Protected) */}
         <Route
           path="/questions"
@@ -138,5 +164,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;
