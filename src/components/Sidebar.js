@@ -65,7 +65,6 @@ const Sidebar = () => {
               {userName ? userName.charAt(0).toUpperCase() : "?"}
             </div>
             <div className="user-info">
-              <span className="user-name">{userName || "User"}</span>
               <span className="user-email">{userEmail || "No Email"}</span>
             </div>
           </div>

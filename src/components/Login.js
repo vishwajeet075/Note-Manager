@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import '../css/Login.css';
+import { useEffect } from "react";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +25,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  // Check if user is already logged in and redirect to dashboard
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -107,9 +107,8 @@ function Dashboard({ isFavouritesRoute = false }) {
   );
 }
 
-// Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem('email'); // Check if user is authenticated
+  const isAuthenticated = localStorage.getItem('token'); // Check if token exists
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
