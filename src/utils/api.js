@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000'; // Adjust this to your backend URL
+const API_BASE_URL = 'https://note-manager-backend-iuif.onrender.com'; // Adjust this to your backend URL
 
 // Helper function to get JWT token from localStorage
 const getAuthHeader = () => {
