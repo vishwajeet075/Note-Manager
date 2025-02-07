@@ -34,7 +34,7 @@ const Signup = () => {
     const user = { email, password };
   
     try {
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("https://note-manager-backend-iuif.onrender.com/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
