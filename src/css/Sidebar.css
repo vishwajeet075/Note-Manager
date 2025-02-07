@@ -86,22 +86,22 @@
   font-weight: bold;
   margin-right: 0.875rem;
   border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0; /* Prevent the circle from shrinking */
 }
 
 .user-info {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-}
-
-.user-name {
-  font-weight: 500;
-  color: white;
+  overflow: hidden; /* Prevent text overflow */
 }
 
 .user-email {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow */
 }
 
 .profile-dropdown {

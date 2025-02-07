@@ -4,7 +4,6 @@ import { LogOut, User } from 'lucide-react';
 import '../css/Sidebar.css';
 
 const Sidebar = () => {
-  const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
@@ -13,7 +12,6 @@ const Sidebar = () => {
 
   useEffect(() => {
     setActiveTab(location.pathname);
-    setUserName(localStorage.getItem("userName") || "");
     setUserEmail(localStorage.getItem("userEmail") || "");
   }, [location.pathname]);
 
@@ -62,10 +60,9 @@ const Sidebar = () => {
             onClick={() => setIsProfileOpen(!isProfileOpen)}
           >
             <div className="user-circle">
-              {userName ? userName.charAt(0).toUpperCase() : "?"}
+              {userEmail ? userEmail.charAt(0).toUpperCase() : "?"}
             </div>
             <div className="user-info">
-              <span className="user-name">{userName || "User"}</span>
               <span className="user-email">{userEmail || "No Email"}</span>
             </div>
           </div>

@@ -8,7 +8,13 @@ import NoteModal from './components/NoteModal';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import './App.css';
-import { createNote, deleteNote, renameNote } from './utils/api.js';
+import { fetchNotes, addNote as addNoteApi, deleteNote as deleteNoteApi, updateNoteTitle, toggleNoteFavorite } from './utils/api';
+import { useEffect } from 'react';
+
+
+
+
+
 
 // Main Dashboard Component
 // Main Dashboard Component
@@ -18,7 +24,17 @@ function Dashboard({ isFavouritesRoute = false }) {
   const [sortMethod, setSortMethod] = useState('newest');
   const [selectedNote, setSelectedNote] = useState(null);
 
-  const token = localStorage.getItem('token'); // Get the token from local storage
+  useEffect(() => {
+    const loadNotes = async () => {
+      try {
+        const fetchedNotes = await fetchNotes();
+        setNotes(fetchedNotes);
+      } catch (error) {
+        console.error('Error loading notes:', error);
+      }
+    };
+    loadNotes();
+  }, []);
 
   const filteredAndSortedNotes = useMemo(() => {
     let result = notes.filter(
@@ -42,58 +58,75 @@ function Dashboard({ isFavouritesRoute = false }) {
   }, [notes, searchTerm, sortMethod, isFavouritesRoute]);
 
   const addNote = useCallback(async (newNote) => {
-    const noteToAdd = {
-      ...newNote,
-      id: notes.length + 1,
-      date: new Date().toISOString().split('T')[0],
-      audioLength: newNote.type === 'audio' ? '00:09' : null,
-      isFavorite: false, // Default to false
-    };
-
     try {
-      const createdNote = await createNote(noteToAdd, token);
-      setNotes((prevNotes) => [...prevNotes, createdNote]);
+      const noteToAdd = {
+        ...newNote,
+        date: new Date().toISOString().split('T')[0],
+        isFavorite: false,
+      };
+      const addedNote = await addNoteApi(noteToAdd);
+      setNotes(prevNotes => [...prevNotes, addedNote]);
     } catch (error) {
-      console.error('Failed to create note:', error);
+      console.error('Error adding note:', error);
     }
-  }, [notes, token]);
+  }, []);
 
   const handleCopy = (content) => {
     navigator.clipboard.writeText(content);
     alert('Copied to clipboard!');
   };
 
-  const handleDelete = useCallback(async (id) => {
-    try {
-      await deleteNote(id, token);
-      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
-    } catch (error) {
-      console.error('Failed to delete note:', error);
+  const handleDelete = async (id) => {
+    console.log('Attempting to delete note with ID:', id); // Debug log
+    if (!id) {
+      console.error('No note ID provided for deletion');
+      return;
     }
-  }, [token]);
+    try {
+      await deleteNoteApi(id);
+      setNotes(prevNotes => prevNotes.filter(note => note._id !== id));
+    } catch (error) {
+      console.error('Error deleting note:', error);
+    }
+  };
 
-  const handleRename = useCallback(async (id) => {
+  const handleRename = async (id) => {
+    console.log('Attempting to rename note with ID:', id); // Debug log
+    if (!id) {
+      console.error('No note ID provided for renaming');
+      return;
+    }
     const newTitle = prompt('Enter new title:');
     if (newTitle) {
       try {
-        await renameNote(id, newTitle, token);
-        setNotes((prevNotes) =>
-          prevNotes.map((note) =>
-            note.id === id ? { ...note, title: newTitle } : note
+        const updatedNote = await updateNoteTitle(id, newTitle);
+        setNotes(prevNotes =>
+          prevNotes.map(note =>
+            note._id === id ? { ...note, title: newTitle } : note
           )
         );
       } catch (error) {
-        console.error('Failed to rename note:', error);
+        console.error('Error renaming note:', error);
       }
     }
-  }, [token]);
+  };
 
-  const handleFavorite = (id) => {
-    setNotes((prevNotes) =>
-      prevNotes.map((note) =>
-        note.id === id ? { ...note, isFavorite: !note.isFavorite } : note
-      )
-    );
+  const handleFavorite = async (id) => {
+    console.log('Attempting to toggle favorite for note ID:', id); // Debug log
+    if (!id) {
+      console.error('No note ID provided for favorite toggle');
+      return;
+    }
+    try {
+      const updatedNote = await toggleNoteFavorite(id);
+      setNotes(prevNotes =>
+        prevNotes.map(note =>
+          note._id === id ? { ...note, isFavorite: !note.isFavorite } : note
+        )
+      );
+    } catch (error) {
+      console.error('Error updating favorite status:', error);
+    }
   };
 
   return (
@@ -104,12 +137,12 @@ function Dashboard({ isFavouritesRoute = false }) {
         <div className="notes-staging-area">
           {filteredAndSortedNotes.map((note) => (
             <NoteCard
-              key={note.id}
+              key={note._id}
               note={note}
               onClick={() => setSelectedNote(note)}
               onCopy={handleCopy}
-              onDelete={handleDelete}
-              onRename={handleRename}
+              onDelete={()=>handleDelete(note._id)}
+              onRename={()=>handleRename(note._id)}
             />
           ))}
         </div>
@@ -119,7 +152,7 @@ function Dashboard({ isFavouritesRoute = false }) {
         <NoteModal
           note={selectedNote}
           onClose={() => setSelectedNote(null)}
-          onFavorite={() => handleFavorite(selectedNote.id)}
+          onFavorite={() => handleFavorite(selectedNote._id)}
         />
       )}
     </div>
@@ -128,7 +161,7 @@ function Dashboard({ isFavouritesRoute = false }) {
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem('email'); // Check if user is authenticated
+  const isAuthenticated = localStorage.getItem('token'); // Check if user is authenticated
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
