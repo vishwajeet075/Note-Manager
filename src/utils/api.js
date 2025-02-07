@@ -105,3 +105,54 @@ export const toggleNoteFavorite = async (noteId) => {
     throw error;
   }
 };
+
+
+
+
+// Update note content
+export const updateNoteContent = async (noteId, newContent) => {
+  if (!noteId) {
+    throw new Error('Note ID is required');
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/notes/${noteId}/content`, {
+      method: 'PATCH',
+      headers: getAuthHeader(),
+      body: JSON.stringify({ content: newContent })
+    });
+    
+    if (!response.ok) throw new Error('Failed to update note content');
+    return await response.json();
+  } catch (error) {
+    console.error('Error updating note content:', error);
+    throw error;
+  }
+};
+
+// Upload image for note
+export const uploadNoteImage = async (noteId, imageFile) => {
+  if (!noteId || !imageFile) {
+    throw new Error('Note ID and image file are required');
+  }
+
+  const formData = new FormData();
+  formData.append('image', imageFile);
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/notes/${noteId}/images`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        // Note: Don't set Content-Type here, it's automatically set for FormData
+      },
+      body: formData
+    });
+    
+    if (!response.ok) throw new Error('Failed to upload image');
+    return await response.json();
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error;
+  }
+};

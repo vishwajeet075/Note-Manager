@@ -10,6 +10,11 @@ import Signup from './components/Signup';
 import './App.css';
 import { fetchNotes, addNote as addNoteApi, deleteNote as deleteNoteApi, updateNoteTitle, toggleNoteFavorite } from './utils/api';
 import { useEffect } from 'react';
+// Add these to your existing imports from './utils/api'
+import { 
+  updateNoteContent,  // Add this
+  uploadNoteImage     // Add this
+} from './utils/api';
 
 
 
@@ -129,6 +134,53 @@ function Dashboard({ isFavouritesRoute = false }) {
     }
   };
 
+  // Add these after handleFavorite in your Dashboard component
+
+const handleNoteUpdate = async (noteId, updatedContent) => {
+  console.log('Attempting to update content for note ID:', noteId); // Debug log
+  if (!noteId) {
+    console.error('No note ID provided for content update');
+    return;
+  }
+  try {
+    const updatedNote = await updateNoteContent(noteId, updatedContent);
+    setNotes(prevNotes =>
+      prevNotes.map(note =>
+        note._id === noteId ? { ...note, content: updatedContent } : note
+      )
+    );
+    return updatedNote;
+  } catch (error) {
+    console.error('Error updating note content:', error);
+    throw error;
+  }
+};
+
+const handleImageUpload = async (noteId, imageFile) => {
+  console.log('Attempting to upload image for note ID:', noteId); // Debug log
+  if (!noteId) {
+    console.error('No note ID provided for image upload');
+    return;
+  }
+  try {
+    const uploadedImage = await uploadNoteImage(noteId, imageFile);
+    setNotes(prevNotes =>
+      prevNotes.map(note =>
+        note._id === noteId 
+          ? { 
+              ...note, 
+              images: [...(note.images || []), uploadedImage] 
+            } 
+          : note
+      )
+    );
+    return uploadedImage;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error;
+  }
+};
+
   return (
     <div className="app-container">
       <Sidebar />
@@ -148,13 +200,16 @@ function Dashboard({ isFavouritesRoute = false }) {
         </div>
         {!isFavouritesRoute && <InputBar onAddNote={addNote} />}
       </div>
-      {selectedNote && (
-        <NoteModal
-          note={selectedNote}
-          onClose={() => setSelectedNote(null)}
-          onFavorite={() => handleFavorite(selectedNote._id)}
-        />
-      )}
+
+{selectedNote && (
+  <NoteModal
+    note={selectedNote}
+    onClose={() => setSelectedNote(null)}
+    onFavorite={() => handleFavorite(selectedNote._id)}
+    onUpdateContent={handleNoteUpdate}
+    onImageUpload={handleImageUpload}
+  />
+)}
     </div>
   );
 }
