@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Maximize2, Minimize2, Star, Image, Edit2, Download,
+  Maximize2, Minimize2, Star, Image, Edit2,
   X, Play, Pause, Save, Volume2
 } from 'lucide-react';
 import '../css/NoteModal.css';
@@ -156,6 +156,7 @@ const NoteModal = ({ note, onClose, onFavorite, onUpdateContent, onImageUpload }
               {images.length > 0 && (
                 <div className="images-grid">
                   {images.map((image, index) => (
+                    // eslint-disable-next-line
                     <img 
                       key={index}
                       src={image.url}

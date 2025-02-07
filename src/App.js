@@ -104,6 +104,7 @@ function Dashboard({ isFavouritesRoute = false }) {
     const newTitle = prompt('Enter new title:');
     if (newTitle) {
       try {
+        // eslint-disable-next-line
         const updatedNote = await updateNoteTitle(id, newTitle);
         setNotes(prevNotes =>
           prevNotes.map(note =>
@@ -123,6 +124,7 @@ function Dashboard({ isFavouritesRoute = false }) {
       return;
     }
     try {
+      // eslint-disable-next-line
       const updatedNote = await toggleNoteFavorite(id);
       setNotes(prevNotes =>
         prevNotes.map(note =>
