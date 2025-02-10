@@ -1,3 +1,4 @@
+// Sidebar.js
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { LogOut, User } from 'lucide-react';
@@ -49,6 +50,14 @@ const Sidebar = () => {
           >
             <span className="menu-icon">⭐</span>
             <span>Favourites</span>
+          </div>
+          {/* Add Study Section */}
+          <div
+            className={`sidebar-menu-item ${activeTab === '/study' ? 'active' : ''}`}
+            onClick={() => navigate('/study')}
+          >
+            <span className="menu-icon">📚</span>
+            <span>Study</span>
           </div>
         </div>
       </div>

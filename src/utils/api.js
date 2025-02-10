@@ -1,6 +1,6 @@
-const API_BASE_URL = 'https://note-manager-backend-iuif.onrender.com'; // Adjust this to your backend URL
+const API_BASE_URL = 'https://note-manager-backend-iuif.onrender.com'; 
 
-// Helper function to get JWT token from localStorage
+
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');
   return {
@@ -25,7 +25,7 @@ export const fetchNotes = async () => {
   }
 };
 
-// Add a new note
+
 export const addNote = async (noteData) => {
   try {
     const response = await fetch(`${API_BASE_URL}/notes`, {
@@ -42,12 +42,12 @@ export const addNote = async (noteData) => {
   }
 };
 
-// Delete a note
+
 export const deleteNote = async (noteId) => {
   if (!noteId) {
     throw new Error('Note ID is required');
   }
-  console.log('Deleting note with ID:', noteId); // Debug log
+  console.log('Deleting note with ID:', noteId); 
 
   try {
     const response = await fetch(`${API_BASE_URL}/notes/${noteId}`, {
