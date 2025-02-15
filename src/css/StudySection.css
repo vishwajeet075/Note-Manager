@@ -1,52 +1,95 @@
-/* StudySection.css */
-.study-section {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+.upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-area.drag-active {
+  border-color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.upload-area .hidden-input {
+  display: none;
+}
+
+.upload-prompt {
+  color: #6c757d;
+}
+
+.upload-prompt svg {
+  color: #0d6efd;
+}
+
+.preview-container {
+  width: 100%;
+  position: relative;
+}
+
+.img-preview {
+  max-height: 300px;
+  max-width: 100%;
+  border-radius: 0.5rem;
+  object-fit: contain;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.result-image {
+  max-height: 500px;
+  margin: 0 auto;
+}
+
+.extracted-text {
+  white-space: pre-wrap;
+  font-family: 'Courier New', Courier, monospace;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.alert {
+  background-color: rgba(13, 202, 240, 0.1);
+  border: none;
+}
+
+.card {
+  border-radius: 1rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.result-section {
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem !important;
   }
   
-  .study-section h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
+  .upload-area {
+    padding: 1rem;
+    min-height: 150px;
   }
   
-  .study-section p {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 20px;
+  .img-preview {
+    max-height: 200px;
   }
-  
-  .study-section form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .study-section input[type="file"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .study-section button {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .study-section button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .result-container {
-    margin-top: 20px;
-  }
-  
-  .result-container img {
-    max-width: 100%;
-    border-radius: 5px;
-  }
+}
